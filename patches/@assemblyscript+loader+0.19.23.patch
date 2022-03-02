@@ -1,0 +1,49 @@
+diff --git a/node_modules/@assemblyscript/loader/index.js b/node_modules/@assemblyscript/loader/index.js
+index 1185890..0f1485f 100644
+--- a/node_modules/@assemblyscript/loader/index.js
++++ b/node_modules/@assemblyscript/loader/index.js
+@@ -352,7 +352,7 @@ function isModule(src) {
+ }
+ 
+ /** Asynchronously instantiates an AssemblyScript module from anything that can be instantiated. */
+-export async function instantiate(source, imports = {}) {
++module.exports.instantiate =  async function instantiate(source, imports = {}) {
+   if (isResponse(source = await source)) return instantiateStreaming(source, imports);
+   const module = isModule(source) ? source : await WebAssembly.compile(source);
+   const extended = preInstantiate(imports);
+@@ -362,7 +362,7 @@ export async function instantiate(source, imports = {}) {
+ }
+ 
+ /** Synchronously instantiates an AssemblyScript module from a WebAssembly.Module or binary buffer. */
+-export function instantiateSync(source, imports = {}) {
++module.exports.instantiateSync = function instantiateSync(source, imports = {}) {
+   const module = isModule(source) ? source : new WebAssembly.Module(source);
+   const extended = preInstantiate(imports);
+   const instance = new WebAssembly.Instance(module, imports);
+@@ -371,7 +371,7 @@ export function instantiateSync(source, imports = {}) {
+ }
+ 
+ /** Asynchronously instantiates an AssemblyScript module from a response, i.e. as obtained by `fetch`. */
+-export async function instantiateStreaming(source, imports = {}) {
++module.exports.instantiateStreaming = async function instantiateStreaming(source, imports = {}) {
+   if (!WebAssembly.instantiateStreaming) {
+     return instantiate(
+       isResponse(source = await source)
+@@ -387,7 +387,7 @@ export async function instantiateStreaming(source, imports = {}) {
+ }
+ 
+ /** Demangles an AssemblyScript module's exports to a friendly object structure. */
+-export function demangle(exports, extendedExports = {}) {
++module.exports.demangle = async function demangle(exports, extendedExports = {}) {
+   const setArgumentsLength = exports["__argumentsLength"]
+     ? length => { exports["__argumentsLength"].value = length; }
+     : exports["__setArgumentsLength"] || exports["__setargc"] || (() => { /* nop */ });
+@@ -467,7 +467,7 @@ export function demangle(exports, extendedExports = {}) {
+   return extendedExports;
+ }
+ 
+-export default {
++module.exports = {
+   instantiate,
+   instantiateSync,
+   instantiateStreaming,
