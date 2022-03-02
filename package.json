@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "autocannon": "^7.7.0",
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.6.7",
+    "progress": "^2.0.3"
   },
   "devDependencies": {
     "patch-package": "^6.4.7",
